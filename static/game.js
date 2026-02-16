@@ -7,19 +7,23 @@ let heart = {
     size: 30
 };
 
-let score = 0;
-
-
-// backend score artır
+// backend çağır
 async function increaseScoreBackend() {
 
-    const response = await fetch('/api/increase_score');
-    const data = await response.json();
+    try {
 
-    score = data.score;
+        const response = await fetch('/api/increase_score');
+        const data = await response.json();
 
-    document.getElementById("score").innerText =
-        "Score: " + score + " 💖";
+        document.getElementById("score").innerText =
+            "Score: " + data.score + " 💖";
+
+    } catch (error) {
+
+        console.log("Backend error:", error);
+
+    }
+
 }
 
 
@@ -39,7 +43,7 @@ function drawHeart(x, y, size) {
 }
 
 
-// rastgele konum
+// yeni konum
 function randomizeHeart() {
 
     heart.x = Math.random() * (canvas.width - 50) + 25;
@@ -47,7 +51,7 @@ function randomizeHeart() {
 }
 
 
-// oyun çizim döngüsü
+// çizim döngüsü
 function draw() {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -58,7 +62,7 @@ function draw() {
 }
 
 
-// mouse click kontrol
+// mouse kontrol
 canvas.addEventListener("click", function(event) {
 
     const rect = canvas.getBoundingClientRect();
@@ -76,10 +80,10 @@ canvas.addEventListener("click", function(event) {
         increaseScoreBackend();
 
         randomizeHeart();
+
     }
 
 });
 
 
-// başlat
 draw();
