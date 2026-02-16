@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: neon-native-engine
+    env: python
+    buildCommand: |
+      cd native
+      bash build.sh
+      cd ..
+      pip install -r requirements.txt
+    startCommand: gunicorn app:app
