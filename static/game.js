@@ -4,25 +4,19 @@ const ctx = canvas.getContext("2d");
 let heart = {
     x: 200,
     y: 200,
-    size: 30
+    size: 40
 };
 
-// backend çağır
-async function increaseScoreBackend() {
+let score = 0;
 
-    try {
 
-        const response = await fetch('/api/increase_score');
-        const data = await response.json();
+// test amaçlı local score artır
+function increaseScore() {
 
-        document.getElementById("score").innerText =
-            "Score: " + data.score + " 💖";
+    score++;
 
-    } catch (error) {
-
-        console.log("Backend error:", error);
-
-    }
+    document.getElementById("score").innerText =
+        "Score: " + score + " 💖";
 
 }
 
@@ -46,12 +40,13 @@ function drawHeart(x, y, size) {
 // yeni konum
 function randomizeHeart() {
 
-    heart.x = Math.random() * (canvas.width - 50) + 25;
-    heart.y = Math.random() * (canvas.height - 50) + 25;
+    heart.x = Math.random() * (canvas.width - 80) + 40;
+    heart.y = Math.random() * (canvas.height - 80) + 40;
+
 }
 
 
-// çizim döngüsü
+// çiz
 function draw() {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -59,10 +54,11 @@ function draw() {
     drawHeart(heart.x, heart.y, heart.size);
 
     requestAnimationFrame(draw);
+
 }
 
 
-// mouse kontrol
+// mouse click
 canvas.addEventListener("click", function(event) {
 
     const rect = canvas.getBoundingClientRect();
@@ -77,7 +73,7 @@ canvas.addEventListener("click", function(event) {
 
     if(distance < heart.size) {
 
-        increaseScoreBackend();
+        increaseScore();
 
         randomizeHeart();
 
